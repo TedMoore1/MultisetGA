@@ -23,6 +23,7 @@ import org.evosuite.PackageInfo;
 import org.evosuite.Properties;
 import org.evosuite.assertion.CheapPurityAnalyzer;
 import org.evosuite.classpath.ResourceList;
+import org.evosuite.ga.multisetga.MultisetInstrumenter;
 import org.evosuite.graphs.cfg.CFGClassAdapter;
 import org.evosuite.instrumentation.error.ErrorConditionClassAdapter;
 import org.evosuite.instrumentation.testability.BooleanTestabilityTransformation;
@@ -227,6 +228,14 @@ public class BytecodeInstrumentation {
         if (Properties.RESET_STATIC_FIELDS) {
             cv = handleStaticReset(className, cv);
         }
+
+        // If multicover coverage is selected, capture integer values generated at
+        // certain program points.
+        if (Properties.STRATEGY.equals(Properties.Strategy.MULTICOVER)) {
+            cv = new MultisetInstrumenter(cv, className);
+        }
+
+
 
         // Mock instrumentation (eg File and TCP).
         if (TestSuiteWriterUtils.needToUseAgent()) {

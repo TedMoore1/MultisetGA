@@ -326,6 +326,7 @@ public class TestGeneration {
                 break;
             case MULTICOVER:
                 cmdLine.add("-Dstrategy=MULTICOVER");
+                break;
             case ONEBRANCH:
                 cmdLine.add("-Dstrategy=OneBranch");
                 if (!args.stream().anyMatch(a -> a.startsWith("-Dalgorithm"))) {
@@ -343,9 +344,6 @@ public class TestGeneration {
                 break;
             case MOSUITE:
                 cmdLine.add("-Dstrategy=MOSuite");
-            //case MULTISET:
-            //    cmdLine.add("-Dstrategy=Multiset");
-
                 // Set up defaults for MOSA if not specified by user
                 boolean algorithmSet = false;
                 boolean selectionSet = false;

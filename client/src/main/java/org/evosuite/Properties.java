@@ -390,6 +390,9 @@ public class Properties {
     @Parameter(key = "chop_max_length", group = "Search Algorithm", description = "Chop statements after exception if length has reached maximum")
     public static boolean CHOP_MAX_LENGTH = true;
 
+    @Parameter(key = "multicover_target", group = "Search Algorithm", description = "Minimum number of times to conver a target")
+    public static int MULTICOVER_TARGET = 2;
+
     //----------- DSE, which is a special case of LS ---------------
 
     /**
@@ -1243,7 +1246,7 @@ public class Properties {
     }
 
     @Parameter(key = "test_naming_strategy", group = "Output", description = "What strategy to use to derive names for tests")
-    public static TestNamingStrategy TEST_NAMING_STRATEGY = TestNamingStrategy.NUMBERED;
+    public static TestNamingStrategy TEST_NAMING_STRATEGY = TestNamingStrategy.COVERAGE;
 
     public enum VariableNamingStrategy {
         TYPE_BASED, HEURISTICS_BASED
@@ -1625,7 +1628,7 @@ public class Properties {
     }
 
     @Parameter(key = "strategy", group = "Runtime", description = "Which mode to use")
-    public static Strategy STRATEGY = Strategy.MOSUITE;
+    public static Strategy STRATEGY = Strategy.MULTICOVER;
 
     @Parameter(key = "process_communication_port", group = "Runtime", description = "Port at which the communication with the external process is done")
     public static int PROCESS_COMMUNICATION_PORT = -1;

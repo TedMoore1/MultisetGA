@@ -154,6 +154,18 @@ public class ExecutionTraceProxy implements ExecutionTrace, Cloneable {
         trace.exitMethod(classname, methodname);
     }
 
+    @Override
+    public void instrumentationPassed(String instrumentationId, List<Integer> vector) {
+        copyOnWrite();
+        trace.instrumentationPassed(instrumentationId, vector);
+    }
+
+    @Override
+    public Set<List<Integer>> getHitInstrumentationData(String instrumentationID) {
+        copyOnWrite();
+        return trace.getHitInstrumentationData(instrumentationID);
+    }
+
     /*
      * (non-Javadoc)
      *
@@ -864,5 +876,10 @@ public class ExecutionTraceProxy implements ExecutionTrace, Cloneable {
     @Override
     public List<String> getInitializedClasses() {
         return trace.getInitializedClasses();
+    }
+
+    @Override
+    public Set<String> getHitInstrumentationPoints() {
+        return trace.getHitInstrumentationPoints();
     }
 }

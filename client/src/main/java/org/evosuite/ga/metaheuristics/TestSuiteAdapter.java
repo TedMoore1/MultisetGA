@@ -459,7 +459,14 @@ public abstract class TestSuiteAdapter<A extends GeneticAlgorithm<TestChromosome
                 super.removeListener(listener);
             } else if (listener instanceof ZeroFitnessStoppingCondition) {
                 super.removeListener(listener);
-            } else {
+            }
+//            else if (listener instanceof MulticoverObserver) {
+//                // TODO: Think about this implementation. It could either be a "stopping condition"
+//                // in itself -> when enough tests are collected, it can return true?
+//                // but this has to be modeled as something else. TODO: Think.
+//                super.addListener(listener);
+//            }
+            else {
                 throw new IllegalArgumentException("cannot adapt listener " + listener);
             }
         } else {

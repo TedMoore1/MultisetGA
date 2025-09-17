@@ -28,7 +28,10 @@ import org.objectweb.asm.Opcodes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -340,6 +343,17 @@ public class ExecutionTracer {
         }
 
         returnValue(tmp.toString().hashCode(), className, methodName);
+    }
+
+    /**
+     * Called by the instrumented code whenever an instrumentation point is hit.
+     *
+     * @param instrumentationId
+     * @param vector
+     */
+    public static void captureDataPoint (String instrumentationId, int[] vector) {
+        List<Integer> vectorList = Arrays.stream(vector).boxed().collect(Collectors.toList());
+        getExecutionTracer().trace.instrumentationPassed(instrumentationId, vectorList);
     }
 
     /**

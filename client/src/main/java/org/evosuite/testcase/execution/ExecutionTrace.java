@@ -21,6 +21,7 @@
 package org.evosuite.testcase.execution;
 
 import org.evosuite.coverage.dataflow.DefUse;
+import org.evosuite.ga.multisetga.Vector;
 import org.evosuite.setup.CallContext;
 import org.evosuite.testcase.execution.ExecutionTraceImpl.BranchEval;
 
@@ -350,6 +351,18 @@ public interface ExecutionTrace {
      * @param methodname a {@link java.lang.String} object.
      */
     void exitMethod(String classname, String methodname);
+
+    /**
+     * Called when instrumentation method is executed
+     *
+     * @param instrumentationId
+     * @param vector
+     */
+    void instrumentationPassed(String instrumentationId, List<Integer> vector);
+
+    Set<List<Integer>> getHitInstrumentationData(String instrumentationID);
+
+    Set<String> getHitInstrumentationPoints();
 
     /**
      * Finish all method calls. This is called when a method is not exited

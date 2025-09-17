@@ -28,6 +28,7 @@ import org.evosuite.assertion.UnitAssertionGenerator;
 import org.evosuite.contracts.ContractChecker;
 import org.evosuite.coverage.branch.Branch;
 import org.evosuite.coverage.branch.BranchPool;
+import org.evosuite.ga.multisetga.MultisetStrategy;
 import org.evosuite.rmi.ClientServices;
 import org.evosuite.statistics.RuntimeVariable;
 import org.evosuite.strategy.*;
@@ -264,6 +265,9 @@ public class TestSuiteGeneratorHelper {
                 return new NoveltyStrategy();
             case MAP_ELITES:
                 return new MAPElitesStrategy();
+            case MULTICOVER:
+                // Change naming?
+                return new MultisetStrategy();
             default:
                 throw new RuntimeException("Unsupported strategy: " + Properties.STRATEGY);
         }

@@ -31,6 +31,7 @@ import org.evosuite.coverage.dataflow.Use;
 import org.evosuite.setup.CallContext;
 import org.evosuite.statistics.RuntimeVariable;
 import org.evosuite.utils.ArrayUtil;
+import org.evosuite.utils.LoggingUtils;
 import org.objectweb.asm.Opcodes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -507,7 +508,7 @@ public class ExecutionTraceImpl implements ExecutionTrace, Cloneable {
             coveredTrueContext.put(branch, new HashMap<>());
             coveredFalseContext.put(branch, new HashMap<>());
         }
-        //CallContext context = new CallContext(new Throwable().getStackTrace());
+        // CallContext context = new CallContext(new Throwable().getStackTrace());
         CallContext context = new CallContext(stack);
 
         if (!coveredPredicateContext.get(branch).containsKey(context)) {
@@ -786,7 +787,8 @@ public class ExecutionTraceImpl implements ExecutionTrace, Cloneable {
         }
         if (stack == null) {
             return other.stack == null;
-        } else return stack.equals(other.stack);
+        } else
+            return stack.equals(other.stack);
     }
 
     /**
@@ -811,8 +813,28 @@ public class ExecutionTraceImpl implements ExecutionTrace, Cloneable {
             } else {
                 finishedCalls.add(stack.pop());
             }
-            //}
+            // }
         }
+    }
+
+    public Map<String, Set<List<Integer>>> instrumentationData = Collections.synchronizedMap(new HashMap<>());
+
+    @Override
+    public void instrumentationPassed(String instrumentationId, List<Integer> vector) {
+        // LoggingUtils.getEvoLogger().info("Adding instrumentation data for {}: {} on trace {}",
+        // instrumentationId, vector, this.hashCode());
+        Set<List<Integer>> available = instrumentationData.getOrDefault(instrumentationId,
+                new HashSet<>());
+        available.add(vector);
+        instrumentationData.put(instrumentationId, available);
+    }
+
+    @Override
+    public Set<List<Integer>> getHitInstrumentationData(String instrumentationID) {
+        // LoggingUtils.getEvoLogger().info("Returning instrumentation data for {}: {} on trace {}",
+        // instrumentationID,
+        // instrumentationData.getOrDefault(instrumentationID, new HashSet<>()), this.hashCode());
+        return instrumentationData.getOrDefault(instrumentationID, new HashSet<>());
     }
 
     /**
@@ -1905,5 +1927,10 @@ public class ExecutionTraceImpl implements ExecutionTrace, Cloneable {
     @Override
     public List<String> getInitializedClasses() {
         return this.initializedClasses;
+    }
+
+    @Override
+    public Set<String> getHitInstrumentationPoints() {
+        return new HashSet<String>(this.instrumentationData.keySet());
     }
 }
